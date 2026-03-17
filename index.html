@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machynlleth 2026 Itinerary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f1f5f9; }
+        
+        /* Map styling with a subtle dark filter */
+        .venue-map { 
+            filter: grayscale(0.5) contrast(1.2) brightness(0.8); 
+            border-radius: 12px 0 0 12px; 
+            height: 220px; 
+            width: 100%; 
+            border: none; 
+            background: #1e293b;
+        }
+        
+        /* Ticket slot styling - sized for scannability */
+        .ticket-slot { background: #1e293b; border: 2px dashed #334155; height: 320px; display: flex; align-items: center; justify-content: center; border-radius: 12px; overflow: hidden; position: relative; width: 100%; }
+        .qr-placeholder { width: 280px; height: 280px; object-fit: contain; background: white; padding: 10px; border-radius: 8px; }
+        
+        /* Accordion transition logic */
+        .content-hidden { display: none; }
+        .rotate-180 { transform: rotate(180deg); }
+        .accordion-header { cursor: pointer; transition: background-color 0.2s; }
+        .accordion-header:hover { background-color: rgba(51, 65, 85, 0.3); }
+
+        /* Carousel scrollbar hide and layout */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; scroll-behavior: smooth; }
+
+        /* Highlight Styles */
+        .next-show-highlight {
+            border: 2px solid #ef4444;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+            background-color: rgba(30, 41, 59, 0.8) !important;
+        }
+        @keyframes pulse-border {
+            0% { border-color: #ef4444; box-shadow: 0 0 0px rgba(239, 68, 68, 0.4); }
+            50% { border-color: #f87171; box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); }
+            100% { border-color: #ef4444; box-shadow: 0 0 0px rgba(239, 68, 68, 0.4); }
+        }
+        .pulse { animation: pulse-border 2s infinite; }
+
+        .header-countdown {
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 0.75rem;
+            color: #94a3b8; 
+        }
+        
+        .next-show-highlight .header-countdown {
+            color: #fca5a5; 
+        }
+
+        .map-btn {
+            transition: all 0.2s;
+            border-radius: 0 12px 12px 0;
+        }
+        .map-btn:active {
+            opacity: 0.8;
+            transform: scale(0.98);
+        }
+        
+        /* Interactive dots */
+        .dot-btn {
+            width: 10px;
+            height: 10px;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 0;
+            border: none;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6 max-w-lg mx-auto pb-20 text-slate-200">
+
+    <header class="text-center mb-10 flex flex-col items-center">
+        <div class="flex items-center justify-center gap-4 mb-2">
+            <span class="text-3xl font-black text-white uppercase tracking-tighter">Dafydd</span>
+            <img src="https://uploads.littlewander.co.uk/app/uploads/sites/2/2017/12/mach-logo-180x180.png" alt="Festival Logo" class="w-16 h-16 rounded-full shadow-lg border-2 border-red-500 bg-white p-1">
+            <span class="text-3xl font-black text-white uppercase tracking-tighter">Bonang</span>
+        </div>
+        <h1 class="text-sm font-bold text-slate-400 uppercase tracking-[0.2em] italic text-center px-4">
+            go to <span class="text-red-500 not-italic font-black">Machynlleth Comedy Festival 2026</span>
+        </h1>
+    </header>
+
+    <!-- Outward Journey -->
+    <div class="bg-slate-800 p-4 rounded-xl mb-6 border-l-4 border-white shadow-lg">
+        <p class="text-[10px] uppercase font-bold text-slate-400">Outward Journey</p>
+        <p class="text-xl font-bold">🚀 Caernarfon → Machynlleth</p>
+    </div>
+
+    <div class="space-y-6" id="itinerary-list">
+
+        <!-- Friday Show -->
+        <div class="show-card bg-slate-800/40 rounded-2xl border border-slate-700 overflow-hidden" data-time="2026-05-01T18:45:00" id="show-friday">
+            <div class="accordion-header p-4 flex items-center justify-between" onclick="toggleAccordion(this)">
+                <div class="flex items-start gap-4">
+                    <img src="https://uploads.littlewander.co.uk/app/uploads/sites/2/2025/11/Kiell-Smith-Bynoe_mach26_web.jpg" class="w-16 h-16 rounded-lg object-cover shadow-lg border border-slate-600">
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="bg-red-600 text-[10px] font-black px-2 py-0.5 rounded">FRI 1 MAY</span>
+                            <span class="next-badge hidden bg-white text-black text-[9px] font-black px-2 py-0.5 rounded shadow-sm">NEXT SHOW</span>
+                            <span class="header-countdown"></span>
+                        </div>
+                        <h2 class="text-lg font-extrabold mt-0.5 text-white">Kool Story Bro</h2>
+                        <p class="text-slate-400 text-xs font-medium">18:45 | Y Tabernacl</p>
+                    </div>
+                </div>
+                <svg class="w-5 h-5 text-slate-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+            <div class="content-hidden p-4 pt-0 space-y-4 border-t border-slate-700/50 mt-2">
+                
+                <!-- Show Info Snippet -->
+                <div class="pt-4 px-1 text-sm leading-relaxed text-slate-300">
+                    <p>The star of <span class="italic">Ghosts</span> and <span class="italic">Taskmaster</span> brings his smash-hit improv show to Machynlleth. Joined by some of the best improvisers in the business for a night of spontaneous comedy based on your stories.
+                    <a href="https://machcomedyfest.co.uk/show/2026/kiell-smith-bynoes-kool-story-bro/" target="_blank" class="text-red-400 font-bold ml-1 hover:underline">Read more...</a></p>
+                </div>
+
+                <div class="pt-2 flex items-stretch">
+                    <div class="w-4/5">
+                        <iframe class="venue-map" src="https://maps.google.com/maps?q=Y%20Tabernacl,%20Heol%20Pen'rallt,%20Machynlleth%20SY20%208AJ&t=&z=16&ie=UTF8&iwloc=&output=embed"></iframe>
+                    </div>
+                    <button onclick="getDirections('Y Tabernacl, Heol Pen\'rallt, Machynlleth SY20 8AJ')" class="map-btn w-1/5 bg-slate-700 hover:bg-slate-600 flex flex-col items-center justify-center border-y border-r border-slate-600 shadow-inner">
+                        <span class="text-[3.5rem] leading-none mb-1">🚶‍♂️</span>
+                        <span class="text-[9px] font-black tracking-tighter uppercase leading-none text-center">Get<br>There</span>
+                    </button>
+                </div>
+
+                <!-- Ticket Carousel -->
+                <div class="relative w-full group mt-4">
+                    <div class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar" id="carousel-friday">
+                        <div class="snap-center shrink-0 w-full flex flex-col items-center gap-2">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Dafydd's Ticket</span>
+                            <div class="ticket-slot shadow-inner">
+                                <img src="https://machcomedyfest.ticketsolve.com/qr?code=MR5BY60H4Y" class="qr-placeholder" alt="Dafydd Ticket">
+                            </div>
+                        </div>
+                        <div class="snap-center shrink-0 w-full flex flex-col items-center gap-2">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Bonang's Ticket</span>
+                            <div class="ticket-slot shadow-inner">
+                                <img src="https://machcomedyfest.ticketsolve.com/qr?code=J56VL9NUHG" class="qr-placeholder" alt="Bonang Ticket">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center gap-4 mt-4 py-2">
+                        <button onclick="gotoSlide('carousel-friday', 0)" class="dot-btn bg-white" title="Ticket 1"></button>
+                        <button onclick="gotoSlide('carousel-friday', 1)" class="dot-btn bg-slate-700" title="Ticket 2"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saturday Show -->
+        <div class="show-card bg-slate-800/40 rounded-2xl border border-slate-700 overflow-hidden" data-time="2026-05-02T14:00:00" id="show-saturday">
+            <div class="accordion-header p-4 flex items-center justify-between" onclick="toggleAccordion(this)">
+                <div class="flex items-start gap-4">
+                    <img src="https://uploads.littlewander.co.uk/app/uploads/sites/2/2026/01/Stewart-Lee-and-Robert-Lloyd_mach26_web.jpg" class="w-16 h-16 rounded-lg object-cover shadow-lg border border-slate-600">
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="bg-blue-600 text-[10px] font-black px-2 py-0.5 rounded">SAT 2 MAY</span>
+                            <span class="next-badge hidden bg-white text-black text-[9px] font-black px-2 py-0.5 rounded shadow-sm">NEXT SHOW</span>
+                            <span class="header-countdown"></span>
+                        </div>
+                        <h2 class="text-lg font-extrabold mt-0.5 text-white">Joking Apart</h2>
+                        <p class="text-slate-400 text-xs font-medium">14:00 | Ysgol Bro Hyddgen</p>
+                    </div>
+                </div>
+                <svg class="w-5 h-5 text-slate-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+            <div class="content-hidden p-4 pt-0 space-y-4 border-t border-slate-700/50 mt-2">
+                
+                <!-- Show Info Snippet -->
+                <div class="pt-4 px-1 text-sm leading-relaxed text-slate-300">
+                    <p>Stewart Lee asks Robert Lloyd to explain some old jokes. A unique look into the mechanics of comedy and the history of the form, featuring rare footage and deep-dive analysis.
+                    <a href="https://machcomedyfest.co.uk/show/2026/joking-apart-stewart-lee-asks-robert-lloyd-to-explain-old-jokes/" target="_blank" class="text-blue-400 font-bold ml-1 hover:underline">Read more...</a></p>
+                </div>
+
+                <div class="pt-2 flex items-stretch">
+                    <div class="w-4/5">
+                        <iframe class="venue-map" src="https://maps.google.com/maps?q=Ysgol%20Bro%20Hyddgen,%20Machynlleth%20SY20%208DR&t=&z=16&ie=UTF8&iwloc=&output=embed"></iframe>
+                    </div>
+                    <button onclick="getDirections('Ysgol Bro Hyddgen, Machynlleth SY20 8DR')" class="map-btn w-1/5 bg-slate-700 hover:bg-slate-600 flex flex-col items-center justify-center border-y border-r border-slate-600 shadow-inner">
+                        <span class="text-[3.5rem] leading-none mb-1">🚶‍♂️</span>
+                        <span class="text-[9px] font-black tracking-tighter uppercase leading-none text-center">Get<br>There</span>
+                    </button>
+                </div>
+
+                <!-- Ticket Carousel -->
+                <div class="relative w-full group mt-4">
+                    <div class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar" id="carousel-saturday">
+                        <div class="snap-center shrink-0 w-full flex flex-col items-center gap-2">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Dafydd's Ticket</span>
+                            <div class="ticket-slot shadow-inner">
+                                <img src="https://machcomedyfest.ticketsolve.com/qr?code=NGO3FCBJ4E" class="qr-placeholder" alt="Dafydd Ticket">
+                            </div>
+                        </div>
+                        <div class="snap-center shrink-0 w-full flex flex-col items-center gap-2">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Bonang's Ticket</span>
+                            <div class="ticket-slot shadow-inner">
+                                <img src="https://machcomedyfest.ticketsolve.com/qr?code=UO2T3QSXM6" class="qr-placeholder" alt="Bonang Ticket">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center gap-4 mt-4 py-2">
+                        <button onclick="gotoSlide('carousel-saturday', 0)" class="dot-btn bg-white" title="Ticket 1"></button>
+                        <button onclick="gotoSlide('carousel-saturday', 1)" class="dot-btn bg-slate-700" title="Ticket 2"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sunday Show -->
+        <div class="show-card bg-slate-800/40 rounded-2xl border border-slate-700 overflow-hidden" data-time="2026-05-03T18:00:00" id="show-sunday">
+            <div class="accordion-header p-4 flex items-center justify-between" onclick="toggleAccordion(this)">
+                <div class="flex items-start gap-4">
+                    <img src="https://uploads.littlewander.co.uk/app/uploads/sites/2/2026/03/Nick-Helm_mach26_web.jpg" class="w-16 h-16 rounded-lg object-cover shadow-lg border border-slate-600">
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="bg-green-600 text-[10px] font-black px-2 py-0.5 rounded">SUN 3 MAY</span>
+                            <span class="next-badge hidden bg-white text-black text-[9px] font-black px-2 py-0.5 rounded shadow-sm">NEXT SHOW</span>
+                            <span class="header-countdown"></span>
+                        </div>
+                        <h2 class="text-lg font-extrabold mt-0.5 text-white">Nick Helm</h2>
+                        <p class="text-slate-400 text-xs font-medium">18:00 | Y Tabernacl</p>
+                    </div>
+                </div>
+                <svg class="w-5 h-5 text-slate-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+            <div class="content-hidden p-4 pt-0 space-y-4 border-t border-slate-700/50 mt-2">
+                
+                <!-- Show Info Snippet -->
+                <div class="pt-4 px-1 text-sm leading-relaxed text-slate-300">
+                    <p>The human powerhouse returns with a brand new hour of <span class="italic">Masterworks in Progress</span>. Expect high energy, heavy metal, and a lot of heart from one of the most unique voices in British comedy.
+                    <a href="https://machcomedyfest.co.uk/show/2026/nick-helm-masterworks-in-progress-26/" target="_blank" class="text-green-400 font-bold ml-1 hover:underline">Read more...</a></p>
+                </div>
+
+                <div class="pt-2 flex items-stretch">
+                    <div class="w-4/5">
+                        <iframe class="venue-map" src="https://maps.google.com/maps?q=Y%20Tabernacl,%20Heol%20Pen'rallt,%20Machynlleth%20SY20%208AJ&t=&z=16&ie=UTF8&iwloc=&output=embed"></iframe>
+                    </div>
+                    <button onclick="getDirections('Y Tabernacl, Heol Pen\'rallt, Machynlleth SY20 8AJ')" class="map-btn w-1/5 bg-slate-700 hover:bg-slate-600 flex flex-col items-center justify-center border-y border-r border-slate-600 shadow-inner">
+                        <span class="text-[3.5rem] leading-none mb-1">🚶‍♂️</span>
+                        <span class="text-[9px] font-black tracking-tighter uppercase leading-none text-center">Get<br>There</span>
+                    </button>
+                </div>
+
+                <!-- Ticket Carousel -->
+                <div class="relative w-full group mt-4">
+                    <div class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar" id="carousel-sunday">
+                        <div class="snap-center shrink-0 w-full flex flex-col items-center gap-2">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Dafydd's Ticket</span>
+                            <div class="ticket-slot shadow-inner">
+                                <img src="https://machcomedyfest.ticketsolve.com/qr?code=6AG5QHIB8Q" class="qr-placeholder" alt="Dafydd Ticket">
+                            </div>
+                        </div>
+                        <div class="snap-center shrink-0 w-full flex flex-col items-center gap-2">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Bonang's Ticket</span>
+                            <div class="ticket-slot shadow-inner">
+                                <img src="https://machcomedyfest.ticketsolve.com/qr?code=K2DBTN6076" class="qr-placeholder" alt="Bonang Ticket">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center gap-4 mt-4 py-2">
+                        <button onclick="gotoSlide('carousel-sunday', 0)" class="dot-btn bg-white" title="Ticket 1"></button>
+                        <button onclick="gotoSlide('carousel-sunday', 1)" class="dot-btn bg-slate-700" title="Ticket 2"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Return Journey -->
+    <div class="bg-slate-800 p-4 rounded-xl mt-12 border-l-4 border-red-500 shadow-lg">
+        <p class="text-[10px] uppercase font-bold text-slate-400">Return Journey</p>
+        <p class="text-xl font-bold">🏠 Machynlleth → Caernarfon</p>
+    </div>
+
+    <script>
+        function toggleAccordion(element) {
+            const content = element.nextElementSibling;
+            const chevron = element.querySelector('svg');
+            
+            if (content.style.display === "block") {
+                content.style.display = "none";
+                chevron.classList.remove('rotate-180');
+            } else {
+                content.style.display = "block";
+                chevron.classList.add('rotate-180');
+            }
+        }
+
+        function getDirections(dest) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    const url = `https://www.google.com/maps/dir/?api=1&origin=${lat},${lng}&destination=${encodeURIComponent(dest)}&travelmode=walking`;
+                    window.open(url, '_blank');
+                }, function(error) {
+                    const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(dest)}&travelmode=walking`;
+                    window.open(url, '_blank');
+                });
+            } else {
+                const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(dest)}&travelmode=walking`;
+                window.open(url, '_blank');
+            }
+        }
+
+        function gotoSlide(id, index) {
+            const el = document.getElementById(id);
+            const width = el.offsetWidth;
+            el.scrollTo({ left: index * width, behavior: 'smooth' });
+        }
+
+        function updateCountdowns() {
+            const now = new Date().getTime();
+            const shows = document.querySelectorAll('.show-card');
+            let nextShowFound = false;
+
+            shows.forEach(show => {
+                const showTime = new Date(show.dataset.time).getTime();
+                const nextBadge = show.querySelector('.next-badge');
+                const headerCountdown = show.querySelector('.header-countdown');
+                const distance = showTime - now;
+
+                show.classList.remove('next-show-highlight', 'pulse');
+                nextBadge.classList.add('hidden');
+
+                if (distance > 0) {
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    let timeStr = "";
+                    if (days > 0) timeStr += days + "d ";
+                    timeStr += hours + "h " + minutes + "m " + seconds + "s";
+                    
+                    headerCountdown.innerHTML = timeStr;
+
+                    if (!nextShowFound) {
+                        nextShowFound = true;
+                        show.classList.add('next-show-highlight', 'pulse');
+                        nextBadge.classList.remove('hidden');
+                    }
+                } else {
+                    headerCountdown.innerHTML = "Started";
+                    headerCountdown.classList.add('text-slate-500');
+                }
+            });
+        }
+
+        setInterval(updateCountdowns, 1000);
+        updateCountdowns();
+
+        // Sync dots on scroll
+        document.querySelectorAll('.flex.overflow-x-auto').forEach(carousel => {
+            carousel.addEventListener('scroll', () => {
+                const dotsContainer = carousel.closest('.relative').querySelector('.flex.justify-center');
+                const dots = dotsContainer.children;
+                const index = Math.round(carousel.scrollLeft / carousel.offsetWidth);
+                for(let i=0; i<dots.length; i++) {
+                    dots[i].classList.toggle('bg-white', i === index);
+                    dots[i].classList.toggle('bg-slate-700', i !== index);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
